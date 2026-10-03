@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Same list and order as TICKET_TOPICS in getmeds_backend card_service.py. -->
+    <string-array name="ticket_topics">
+        <item>Can\'t sign in</item>
+        <item>QR or tap not working</item>
+        <item>Wrong details on my card</item>
+        <item>Other</item>
+    </string-array>
+</resources>

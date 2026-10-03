@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Getmeds Card</string>
+    <string name="hce_description">Getmeds business card</string>
+
+    <!-- Login -->
+    <string name="getmeds">Getmeds</string>
+    <string name="login_title">Sign in</string>
+    <string name="login_subtitle">Sign in with the email on your business card.</string>
+    <string name="email_label">Email</string>
+    <string name="email_hint">juan@getmeds.ph</string>
+    <string name="password_label">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="show_password">Show password</string>
+    <string name="hide_password">Hide password</string>
+    <string name="forgot_password">First time / Forgot password?</string>
+    <string name="reset_title">Set your password</string>
+    <string name="reset_subtitle">Enter the email on your business card. We\'ll email you a 6-digit code.</string>
+    <string name="send_code">Send code</string>
+    <string name="code_label">Code from the email</string>
+    <string name="code_hint">6-digit code</string>
+    <string name="code_sent">We emailed a code to %1$s. Enter it and choose a password. Check spam if you don\'t see it.</string>
+    <string name="new_password_label">New password</string>
+    <string name="new_password_hint">At least 8 characters</string>
+    <string name="confirm_password_label">Type it again</string>
+    <string name="save_password">Save password and sign in</string>
+    <string name="back_to_sign_in">Back to sign in</string>
+
+    <!-- Signed in -->
+    <string name="sign_out">Sign out</string>
+    <string name="sign_out_confirm">Sign out of Getmeds Card on this phone?</string>
+    <string name="remember_me">Remember me for 30 days</string>
+    <string name="session_expired">You\'ve been signed out. Please sign in again.</string>
+    <string name="no_contact">Your card has no link yet, so it can\'t be shared. Ask the admin to set it in the Studio.</string>
+
+    <!-- Share -->
+    <string name="switch_card">Switch card (%1$d cards)</string>
+    <string name="choose_card">Which card do you want to share?</string>
+    <string name="menu">Menu</string>
+    <string name="how_it_works">How it works</string>
+    <string name="how_it_works_body">Online ID: the QR opens your card on getmeds.ph, where they can save your contact. They need internet.\n\nOffline ID: the QR holds your contact itself, so their phone adds it straight away. No internet needed on either phone.\n\nThe app picks Online ID when your phone has internet and Offline ID when it doesn\'t. You can tap either one yourself.\n\nYou can also hold phones back to back instead of scanning, if your phone has NFC.</string>
+    <string name="got_it">Got it</string>
+    <string name="tap_title">Tap phones</string>
+    <string name="tap_chip_ready">Tap phones · Ready</string>
+    <string name="tap_chip_off">Tap phones · NFC is off</string>
+    <string name="tap_ready_detail">Hold the back of their unlocked phone against yours. My card opens on their phone. On iPhone, they tap the notification that appears.</string>
+    <string name="nfc_off_detail">Turn on NFC to also share by tapping phones. The QR works either way.</string>
+    <string name="turn_on_nfc">Turn on NFC</string>
+    <string name="scan_qr">QR code to scan</string>
+    <!-- The one line under the QR. -->
+    <string name="scan_line_website">Scan to open my card on getmeds.ph</string>
+    <string name="scan_line_direct">Scan to add my contact. No internet needed.</string>
+    <string name="how_to_scan">How do they scan it?</string>
+    <!-- In the "How do they scan it?" pop-up, for the person scanning. -->
+    <string name="steps_website">1. Open your phone camera and point it at this QR.\n2. Tap the link that appears.\n3. On the card page, tap Save to contacts.\n4. Tap Save.</string>
+    <string name="steps_direct">1. Open your phone camera and point it at this QR.\n2. Tap the contact that appears (View).\n3. If it asks to add to an existing contact, tap Create New Contact.\n4. Tap Save.</string>
+    <string name="mode_website">Online ID</string>
+    <string name="mode_direct">Offline ID</string>
+    <string name="mode_website_desc">Opens your card on getmeds.ph. They need internet.</string>
+    <string name="mode_direct_desc">Goes straight to their contacts. No internet needed.</string>
+    <string name="tap_ready_detail_direct">Hold the back of their unlocked Android phone against yours to send your contact. iPhones can\'t receive a contact by tap; let them scan the QR.</string>
+    <string name="sent">Sent! Check their phone.</string>
+
+    <!-- Contact us -->
+    <string name="contact_us">Contact us</string>
+    <string name="back">Back</string>
+    <string name="ticket_intro">Having a problem with the app or your card? Send a ticket to the developer. We\'ll reply to %1$s.</string>
+    <string name="ticket_topic">What\'s it about?</string>
+    <string name="ticket_message">Message</string>
+    <string name="ticket_message_hint">Tell us what happened and what you expected.</string>
+    <string name="ticket_attachments">Attachments (optional)</string>
+    <string name="ticket_attachments_hint">Screenshots, photos or PDFs that show the problem. Up to 5.</string>
+    <string name="ticket_add_file">Add attachment</string>
+    <string name="ticket_add_more">Add another</string>
+    <string name="ticket_remove_file">Remove %1$s</string>
+    <string name="ticket_send">Send ticket</string>
+    <string name="ticket_need_message">Tell us what\'s wrong in the message box.</string>
+    <string name="ticket_too_many">You can attach up to %1$d files.</string>
+    <string name="ticket_file_unreadable">Some files couldn\'t be attached. Use photos, screenshots or PDFs under 3 MB.</string>
+    <string name="ticket_too_big">The attachments are too big together. Remove one or two.</string>
+    <string name="ticket_crash_note">The app closed unexpectedly recently. The technical details of that will be added to your ticket to help us fix it.</string>
+    <string name="ticket_sent_title">Ticket sent</string>
+    <string name="ticket_sent_message">Your ticket number is %1$s. The developer will reply to %2$s.</string>
+</resources>

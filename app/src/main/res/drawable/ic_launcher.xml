@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Blue tile with a white card and contactless waves. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#2563EB" android:pathData="M24,0h60a24,24 0,0 1,24 24v60a24,24 0,0 1,-24 24h-60a24,24 0,0 1,-24 -24v-60a24,24 0,0 1,24 -24z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M26,34h44a6,6 0,0 1,6 6v28a6,6 0,0 1,-6 6h-44a6,6 0,0 1,-6 -6v-28a6,6 0,0 1,6 -6z" />
+    <path android:fillColor="#BFDBFE" android:pathData="M28,44h16v4h-16zM28,52h26v3h-26zM28,59h20v3h-20z" />
+    <path android:fillColor="#00000000" android:strokeColor="#FFFFFF" android:strokeWidth="4" android:strokeLineCap="round"
+        android:pathData="M80,46a12,12 0,0 1,0 16M86,40a20,20 0,0 1,0 28" />
+</vector>

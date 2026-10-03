@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/getmeds"
+            android:src="@drawable/getmeds_logo" />
+
+        <TextView
+            android:id="@+id/heading"
+            style="@style/Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/login_title" />
+
+        <TextView
+            android:id="@+id/subtitle"
+            style="@style/Body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/login_subtitle" />
+
+        <!-- Sign in, and step 1 of setting a password: the email. -->
+        <LinearLayout
+            android:id="@+id/stepMobile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Label"
+                android:text="@string/email_label" />
+
+            <EditText
+                android:id="@+id/email"
+                style="@style/Field"
+                android:autofillHints="emailAddress"
+                android:hint="@string/email_hint"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
+                android:maxLength="254" />
+
+            <LinearLayout
+                android:id="@+id/passwordGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Label"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/password_label" />
+
+                <!-- Password box with a show/hide eye on the right. -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/password"
+                        style="@style/Field"
+                        android:paddingEnd="52dp"
+                        android:autofillHints="password"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPassword"
+                        android:maxLength="128" />
+
+                    <ImageButton
+                        android:id="@+id/passwordToggle"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="4dp"
+                        android:background="@drawable/bg_icon_button"
+                        android:contentDescription="@string/show_password"
+                        android:src="@drawable/ic_eye" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/primary"
+                style="@style/PrimaryButton"
+                android:layout_marginTop="20dp"
+                android:text="@string/sign_in" />
+        </LinearLayout>
+
+        <!-- Step 2 of setting a password: code from the email + the new password. -->
+        <LinearLayout
+            android:id="@+id/stepCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/Label"
+                android:text="@string/code_label" />
+
+            <EditText
+                android:id="@+id/code"
+                style="@style/Field"
+                android:autofillHints="smsOTPCode"
+                android:hint="@string/code_hint"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:letterSpacing="0.3"
+                android:maxLength="6" />
+
+            <TextView
+                style="@style/Label"
+                android:layout_marginTop="16dp"
+                android:text="@string/new_password_label" />
+
+            <!-- Password box with a show/hide eye on the right. -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/newPassword"
+                    style="@style/Field"
+                    android:paddingEnd="52dp"
+                    android:autofillHints="newPassword"
+                    android:hint="@string/new_password_hint"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:maxLength="128" />
+
+                <ImageButton
+                    android:id="@+id/newPasswordToggle"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/bg_icon_button"
+                    android:contentDescription="@string/show_password"
+                    android:src="@drawable/ic_eye" />
+            </FrameLayout>
+
+            <TextView
+                style="@style/Label"
+                android:layout_marginTop="16dp"
+                android:text="@string/confirm_password_label" />
+
+            <!-- Password box with a show/hide eye on the right. -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/confirmPassword"
+                    style="@style/Field"
+                    android:paddingEnd="52dp"
+                    android:autofillHints="newPassword"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:maxLength="128" />
+
+                <ImageButton
+                    android:id="@+id/confirmPasswordToggle"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/bg_icon_button"
+                    android:contentDescription="@string/show_password"
+                    android:src="@drawable/ic_eye" />
+            </FrameLayout>
+
+            <Button
+                android:id="@+id/savePassword"
+                style="@style/PrimaryButton"
+                android:layout_marginTop="20dp"
+                android:text="@string/save_password" />
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/remember"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:buttonTint="@color/brand"
+            android:text="@string/remember_me"
+            android:textColor="@color/ink"
+            android:textSize="15sp" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/danger"
+            android:textSize="15sp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/switchMode"
+            style="@style/TextButton"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="@string/forgot_password" />
+    </LinearLayout>
+</ScrollView>

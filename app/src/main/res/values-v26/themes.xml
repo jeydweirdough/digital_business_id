@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Poppins everywhere. Font resources need Android 8 (API 26), so this
+         lives here; Android 7 keeps the system font from values/themes.xml.
+         Buttons, fields, checkboxes, radio buttons and dialogs each have
+         their own default style, so each is pointed at Poppins too. -->
+    <style name="AppTheme" parent="Base.AppTheme">
+        <item name="android:fontFamily">@font/poppins</item>
+        <item name="android:textViewStyle">@style/Poppins.TextView</item>
+        <item name="android:buttonStyle">@style/Poppins.Button</item>
+        <item name="android:editTextStyle">@style/Poppins.EditText</item>
+        <item name="android:checkboxStyle">@style/Poppins.CheckBox</item>
+        <item name="android:radioButtonStyle">@style/Poppins.RadioButton</item>
+        <item name="android:alertDialogTheme">@style/Poppins.Dialog</item>
+    </style>
+
+    <style name="Poppins.TextView" parent="android:Widget.Material.TextView">
+        <item name="android:fontFamily">@font/poppins</item>
+    </style>
+
+    <style name="Poppins.Button" parent="android:Widget.Material.Button">
+        <item name="android:fontFamily">@font/poppins</item>
+    </style>
+
+    <style name="Poppins.EditText" parent="android:Widget.Material.EditText">
+        <item name="android:fontFamily">@font/poppins</item>
+    </style>
+
+    <style name="Poppins.CheckBox" parent="android:Widget.Material.CompoundButton.CheckBox">
+        <item name="android:fontFamily">@font/poppins</item>
+    </style>
+
+    <style name="Poppins.RadioButton" parent="android:Widget.Material.CompoundButton.RadioButton">
+        <item name="android:fontFamily">@font/poppins</item>
+    </style>
+
+    <style name="Poppins.Dialog" parent="android:Theme.Material.Light.Dialog.Alert">
+        <item name="android:fontFamily">@font/poppins</item>
+        <item name="android:colorAccent">@color/brand</item>
+        <item name="android:textViewStyle">@style/Poppins.TextView</item>
+        <item name="android:buttonStyle">@style/Poppins.Button</item>
+        <item name="android:radioButtonStyle">@style/Poppins.RadioButton</item>
+    </style>
+</resources>
