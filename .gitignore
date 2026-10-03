@@ -11,3 +11,6 @@ local.properties
 *.keystore
 captures/
 .DS_Store
+
+# Local Claude plugin data (SQLite caches)
+.claude/data/
