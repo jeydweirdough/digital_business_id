@@ -26,6 +26,8 @@ Needs JDK 17 and the Android SDK (easiest: install Android Studio, then *Open* t
 
 Pushing to GitHub also builds the APK (`.github/workflows/build.yml`); download it from the run's artifacts.
 
+**Deploy:** bump `versionCode`/`versionName`, push, then run **Deploy APK** from the Actions tab (`.github/workflows/deploy.yml`). It builds a signed release APK and publishes it as the GitHub Release `v<versionName>`. It needs the secrets `SIGNING_KEYSTORE_BASE64`, `SIGNING_STORE_PASSWORD`, `SIGNING_KEY_ALIAS` and `SIGNING_KEY_PASSWORD`. Phones only accept an update signed with the same key as the installed app.
+
 The backend URL is `API_BASE` in `app/build.gradle.kts`.
 
 ## Testing the tap
