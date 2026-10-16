@@ -28,6 +28,15 @@ Needs JDK 17 and the Android SDK (easiest: install Android Studio, then *Open* t
 
 The backend URL is `API_BASE` in `app/build.gradle.kts`.
 
+## Web app and download page (`web/`)
+
+`web/index.html` is the page to send people to: **Download for Android** (the APK from the latest GitHub Release) and **Get it on iPhone**, which opens the web app `web/app.html`. iPhone users add it to their home screen from Safari's Share menu. It has the same sign-in, Online ID / Offline ID QR and Contact us as the Android app, and works offline after the first visit. Phone tap is Android only, because browsers can't act as an NFC tag.
+
+- Plain HTML/CSS/JS, with no build step. To try it locally, run `python -m http.server -d web` and open `http://localhost:8000`.
+- **Deploy web** (`.github/workflows/pages.yml`) publishes `web/` to GitHub Pages on every push to `main` that touches it. One-time setup: *Settings → Pages → Source: GitHub Actions*.
+- After changing anything in `web/`, bump `CACHE` in `web/sw.js` and `WEB_VERSION` in `web/js/config.js` so installed copies update.
+- **Deploy APK** also attaches the APK as `GetmedsCard.apk`, which is what the download button links to.
+
 ## Testing the tap
 
 1. Install the APK on an Android phone with NFC, sign in, open **Share my card**.

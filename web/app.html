@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Getmeds Card</title>
+  <meta name="theme-color" content="#F8FAFC">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Getmeds Card">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="img/icon-192.png">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="vendor/qrcode.js" defer></script>
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+
+<!-- Same screens as the Android app: sign in, the QR, and Contact us.
+     Phone-tap (NFC) sharing is Android only; here it's the QR. -->
+
+<!-- ── Sign in / set password (LoginActivity) ─────────────────────────── -->
+<main id="login" class="screen" hidden>
+  <img class="logo" src="img/getmeds_logo.png" alt="Getmeds" width="200" height="109">
+  <h1 id="loginHeading">Sign in</h1>
+  <p id="loginSubtitle" class="body">Sign in with the email on your business card.</p>
+
+  <form id="loginForm" novalidate>
+    <!-- Sign in, and step 1 of setting a password: the email. -->
+    <div id="stepEmail" style="margin-top:16px">
+      <label for="email">Email</label>
+      <input id="email" class="field" type="email" inputmode="email" autocomplete="username" maxlength="254" placeholder="juan@getmeds.ph" autocapitalize="off" spellcheck="false">
+
+      <div id="passwordGroup">
+        <label for="password">Password</label>
+        <div class="password">
+          <input id="password" class="field" type="password" autocomplete="current-password" maxlength="128">
+          <button type="button" class="icon-button eye" data-toggle="password" aria-label="Show password"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 of setting a password: code from the email + the new password. -->
+    <div id="stepCode" hidden style="margin-top:16px">
+      <label for="code">Code from the email</label>
+      <input id="code" class="field code-field" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code">
+
+      <label for="newPassword">New password</label>
+      <div class="password">
+        <input id="newPassword" class="field" type="password" autocomplete="new-password" maxlength="128" placeholder="At least 8 characters">
+        <button type="button" class="icon-button eye" data-toggle="newPassword" aria-label="Show password"></button>
+      </div>
+
+      <label for="confirmPassword">Type it again</label>
+      <div class="password">
+        <input id="confirmPassword" class="field" type="password" autocomplete="new-password" maxlength="128">
+        <button type="button" class="icon-button eye" data-toggle="confirmPassword" aria-label="Show password"></button>
+      </div>
+    </div>
+
+    <label class="check" id="rememberRow"><input id="remember" type="checkbox"> Remember me for 30 days</label>
+
+    <button id="primary" class="button" type="submit">Sign in</button>
+  </form>
+
+  <div id="loginProgress" class="spinner" hidden></div>
+  <p id="loginError" class="error" role="alert" hidden></p>
+
+  <div class="center"><button id="switchMode" class="text-button" type="button">First time / Forgot password?</button></div>
+
+  <div class="install-hint" data-install-hint hidden></div>
+</main>
+
+<!-- ── The QR (ShareActivity) ─────────────────────────────────────────── -->
+<main id="share" class="screen white" hidden>
+  <div class="topbar">
+    <button id="contactUs" class="icon-button" type="button" aria-label="Contact us">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16a1.5 1.5 0 0 1 1.5 1.5v11a1.5 1.5 0 0 1-1.5 1.5H4a1.5 1.5 0 0 1-1.5-1.5v-11A1.5 1.5 0 0 1 4 5z"/><path d="M3 6.5l9 6.5 9-6.5"/></svg>
+    </button>
+    <button id="menu" class="icon-button" type="button" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5.5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="18.5" r="1.8"/></svg>
+    </button>
+  </div>
+
+  <h1 id="name" class="center name"></h1>
+  <p id="jobTitle" class="body center" style="margin-top:2px"></p>
+
+  <p id="notice" class="notice" hidden>Your card has no link yet, so it can't be shared. Ask the admin to set it in the Studio.</p>
+
+  <!-- How the QR shares: the website card (default) or the contact itself. -->
+  <div class="segment" role="group" aria-label="Share as">
+    <button id="modeWebsite" type="button" aria-pressed="true">Online ID</button>
+    <button id="modeDirect" type="button" aria-pressed="false">Offline ID</button>
+  </div>
+
+  <!-- The point of the app: the other person scans this. -->
+  <canvas id="qr" class="qr" role="img" aria-label="QR code to scan"></canvas>
+  <p id="scanLine" class="scan-line"></p>
+  <div class="center"><button id="howToScan" class="text-button" type="button">How do they scan it?</button></div>
+
+  <div class="install-hint" data-install-hint hidden></div>
+</main>
+
+<!-- ── Contact us (SupportActivity) ───────────────────────────────────── -->
+<main id="support" class="screen" hidden>
+  <div class="back-row">
+    <button id="supportBack" class="icon-button" type="button" aria-label="Back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+    </button>
+    <h1>Contact us</h1>
+  </div>
+  <p id="ticketIntro" class="body" style="margin-top:12px"></p>
+
+  <form id="ticketForm" novalidate>
+    <label for="topic">What's it about?</label>
+    <select id="topic" class="field">
+      <!-- Same list and order as TICKET_TOPICS in getmeds_backend card_service.py. -->
+      <option>Can't sign in</option>
+      <option>QR or tap not working</option>
+      <option>Wrong details on my card</option>
+      <option>Other</option>
+    </select>
+
+    <label for="message">Message</label>
+    <textarea id="message" class="field" maxlength="5000" placeholder="Tell us what happened and what you expected."></textarea>
+
+    <span class="label">Attachments (optional)</span>
+    <p class="hint">Screenshots, photos or PDFs that show the problem. Up to 5.</p>
+    <div id="files" class="files"></div>
+    <input id="fileInput" type="file" accept="image/*,application/pdf" multiple hidden>
+    <button id="addFile" class="button secondary" type="button" style="margin-top:12px">Add attachment</button>
+
+    <button id="sendTicket" class="button" type="submit">Send ticket</button>
+  </form>
+  <div id="ticketProgress" class="spinner" hidden></div>
+  <p id="ticketError" class="error" role="alert" hidden></p>
+</main>
+
+<!-- One pop-up for every message, like AlertDialog. -->
+<dialog id="dialog">
+  <h2 id="dialogTitle"></h2>
+  <p id="dialogBody"></p>
+  <div id="dialogList" class="menu-list"></div>
+  <div id="dialogActions" class="actions"></div>
+</dialog>
+
+</body>
+</html>

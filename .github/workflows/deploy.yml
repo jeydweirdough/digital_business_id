@@ -52,6 +52,8 @@ jobs:
         run: |
           ./gradlew --no-daemon assembleRelease
           mv app/build/outputs/apk/release/app-release.apk "GetmedsCard-${{ steps.version.outputs.tag }}.apk"
+          # Fixed name too, for the download page's .../releases/latest/download/GetmedsCard.apk
+          cp "GetmedsCard-${{ steps.version.outputs.tag }}.apk" GetmedsCard.apk
 
       - uses: actions/upload-artifact@v4
         with:
@@ -62,7 +64,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "${{ steps.version.outputs.tag }}" GetmedsCard-*.apk \
+          gh release create "${{ steps.version.outputs.tag }}" GetmedsCard-*.apk GetmedsCard.apk \
             --target "${{ github.sha }}" \
             --title "GetmedsCard ${{ steps.version.outputs.tag }}" \
             --generate-notes
