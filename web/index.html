@@ -4,105 +4,195 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Get Getmeds Card</title>
-  <meta name="description" content="Download Getmeds Card for Android, or use it on iPhone.">
-  <meta name="theme-color" content="#F8FAFC">
+  <meta name="description" content="Your Getmeds business card on your phone. Download for Android or install on iPhone.">
+  <meta name="theme-color" content="#F1F5F9">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" type="image/png" sizes="192x192" href="img/icon-192.png">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <link rel="stylesheet" href="css/styles.css">
+  <script>
+    // Opened from the home screen: this is the installed app, so skip the
+    // download page and go straight in.
+    if (navigator.standalone === true || matchMedia("(display-mode: standalone)").matches) location.replace("app.html");
+  </script>
+  <script src="vendor/qrcode.js" defer></script>
   <style>
-    .hero { display: flex; align-items: center; gap: 16px; margin-top: 28px; }
-    .hero img { width: 64px; height: 64px; border-radius: 16px; }
-    .hero h1 { margin: 0; }
-    .hero p { margin: 2px 0 0; }
-    .options { display: flex; flex-direction: column; gap: 16px; margin-top: 28px; }
-    .option { padding: 20px; background: #fff; border: 1px solid var(--line); border-radius: 16px; }
-    .option.mine { border: 2px solid var(--brand); padding: 19px; }
-    .option-head { display: flex; align-items: center; gap: 12px; }
-    .option-head svg { width: 32px; height: 32px; flex: none; }
-    .option h2 { margin: 0; font-size: 19px; font-weight: 700; }
-    .tag { display: inline-block; margin-left: auto; padding: 3px 10px; font-size: 12px; font-weight: 600; color: var(--brand); background: var(--brand-soft); border-radius: 99px; }
-    .option .button { margin-top: 16px; }
-    .option .button svg { width: 20px; height: 20px; }
-    ol { margin: 16px 0 0; padding-left: 20px; font-size: 14px; line-height: 1.6; color: #334155; }
-    ol li + li { margin-top: 4px; }
-    .share-icon { display: inline-block; width: 16px; height: 16px; vertical-align: -2px; color: var(--brand); }
-    .foot { margin-top: 28px; font-size: 13px; color: var(--muted); text-align: center; line-height: 1.5; }
+    body { background: #f1f5f9; }
+
+    .page {
+      min-height: 100dvh;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: calc(20px + env(safe-area-inset-top)) 24px calc(32px + env(safe-area-inset-bottom));
+      display: flex;
+      flex-direction: column;
+    }
+    .brand { width: 132px; height: auto; display: block; }
+
+    .hero {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      align-items: center;
+      align-content: start;
+      margin-top: 24px;
+    }
+
+    .copy h1 { margin: 0; font-size: clamp(34px, 9vw, 60px); line-height: 1.08; letter-spacing: -0.02em; }
+    .copy h1 span { color: var(--brand); }
+    .lead { margin: 16px 0 0; font-size: clamp(16px, 4.2vw, 20px); line-height: 1.5; color: #334155; max-width: 30em; }
+
+    /* Phones: one big button for this phone. */
+    .cta { margin-top: 28px; }
+    .cta .button { min-height: 60px; font-size: 17px; border-radius: 14px; margin-top: 0; box-shadow: 0 8px 20px rgb(37 99 235 / 25%); }
+    .cta .button svg { width: 22px; height: 22px; }
+    .cta-note { margin: 12px 0 0; font-size: 14px; color: var(--muted); line-height: 1.5; text-align: center; }
+    .other { display: block; margin-top: 4px; text-align: center; text-decoration: none; }
+
+    /* Computers: scan to open on your phone. */
+    .scan { display: flex; align-items: center; gap: 20px; margin-top: 32px; padding: 16px; background: #fff; border: 1px solid var(--line); border-radius: 16px; max-width: 460px; }
+    .scan canvas { flex: none; }
+    .scan b { display: block; font-size: 17px; }
+    .scan p { margin: 4px 0 0; font-size: 14px; color: var(--muted); line-height: 1.5; }
+
+    .badges-title { margin: 28px 0 12px; font-size: 15px; color: var(--muted); }
+    .badges { display: flex; flex-wrap: wrap; gap: 12px; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 176px;
+      padding: 9px 18px 9px 14px;
+      color: #fff;
+      text-decoration: none;
+      background: #0b0f19;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .badge:hover { background: #1e293b; }
+    .badge svg { width: 26px; height: 26px; flex: none; }
+    .badge small { display: block; font-size: 11px; line-height: 1.2; opacity: 0.85; }
+    .badge strong { display: block; font-size: 17px; font-weight: 600; line-height: 1.25; }
+
+    /* Three phones showing the real app. */
+    .phones { position: relative; height: clamp(340px, 100vw, 560px); max-width: 560px; width: 100%; margin: 0 auto; }
+    .phone {
+      position: absolute;
+      bottom: 0;
+      width: 46%;
+      aspect-ratio: 390 / 844;
+      padding: 2.4%;
+      background: #0b0f19;
+      border-radius: 13% / 6%;
+      box-shadow: 0 24px 48px rgb(15 23 42 / 25%);
+    }
+    .phone img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 11% / 5.2%; background: #fff; }
+    .phone::before { content: ""; position: absolute; top: 3.6%; left: 50%; width: 30%; height: 2.6%; transform: translateX(-50%); background: #0b0f19; border-radius: 99px; z-index: 1; }
+    .phone.left { left: 0; bottom: 6%; transform: rotate(-4deg); width: 40%; }
+    .phone.right { right: 0; bottom: 6%; transform: rotate(4deg); width: 40%; }
+    .phone.middle { left: 50%; transform: translateX(-50%); z-index: 2; }
+
+    .foot { margin-top: 28px; font-size: 13px; color: var(--muted); text-align: center; }
+
+    /* The phone you're on decides what shows. */
+    body:not(.desktop) .desktop-only,
+    body.desktop .phone-only { display: none !important; }
+
+    @media (min-width: 900px) {
+      .hero { grid-template-columns: 1.05fr 1fr; gap: 48px; align-content: center; }
+      .phones { height: 560px; }
+    }
   </style>
 </head>
 <body>
-<main class="screen">
-  <img class="logo" src="img/getmeds_logo.png" alt="Getmeds" width="200" height="109">
+<div class="page">
+  <img class="brand" src="img/getmeds_logo.png" alt="Getmeds" width="132" height="72">
 
-  <div class="hero">
-    <img src="img/icon-192.png" alt="" width="64" height="64">
-    <div>
-      <h1>Getmeds Card</h1>
-      <p class="body">Share your business card with a QR code.</p>
-    </div>
-  </div>
+  <main class="hero">
+    <section class="copy">
+      <h1>Get <span>Getmeds Card</span></h1>
+      <p class="lead">Your business card on your phone. Share it with a QR code, with or without internet.</p>
 
-  <div class="options">
-    <!-- Android: the full app, including tapping phones (NFC). -->
-    <section id="android" class="option" aria-labelledby="androidTitle">
-      <div class="option-head">
-        <svg viewBox="0 0 24 24" fill="#3DDC84" aria-hidden="true"><path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85a.637.637 0 0 0-.83.22l-1.88 3.24a11.43 11.43 0 0 0-8.94 0L5.65 5.67a.643.643 0 0 0-.87-.2c-.28.18-.37.54-.22.83L6.4 9.48A10.78 10.78 0 0 0 1 18h22a10.78 10.78 0 0 0-5.4-8.52zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></svg>
-        <h2 id="androidTitle">Android</h2>
-        <span class="tag" data-mine hidden>Your phone</span>
+      <!-- On a phone: one tap for that phone; the other one is a small link. -->
+      <div class="cta phone-only">
+        <a id="ctaAndroid" class="button" href="#" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+          Download for Android
+        </a>
+        <a id="ctaIphone" class="button" href="app.html" hidden>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 12.6c-.02-2.2 1.8-3.26 1.88-3.31a4.05 4.05 0 0 0-3.18-1.72c-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.87-.76a4.25 4.25 0 0 0-3.59 2.18c-1.54 2.66-.39 6.6 1.1 8.76.73 1.06 1.6 2.24 2.73 2.2 1.1-.05 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13a9.4 9.4 0 0 0 1.2-2.47 3.82 3.82 0 0 1-2.29-3.5zM14.2 6.12a3.8 3.8 0 0 0 .87-2.75 3.9 3.9 0 0 0-2.52 1.3 3.63 3.63 0 0 0-.9 2.65 3.23 3.23 0 0 0 2.55-1.2z"/></svg>
+          Install on iPhone
+        </a>
+        <p id="ctaNote" class="cta-note"></p>
+        <a id="ctaOther" class="text-button other" href="#"></a>
       </div>
-      <p class="body">The full app: QR code, plus sharing by tapping phones.</p>
-      <a id="apkLink" class="button" href="#" download>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
-        Download for Android
-      </a>
-      <ol>
-        <li>Tap <b>Download for Android</b>.</li>
-        <li>Open the downloaded file <b>GetmedsCard.apk</b>.</li>
-        <li>If your phone asks, allow installing apps from this source, then tap <b>Install</b>.</li>
-        <li>Open <b>Getmeds Card</b> and sign in.</li>
-      </ol>
+
+      <!-- On a computer: scan to open this page on the phone. -->
+      <div class="scan desktop-only">
+        <canvas id="pageQr" role="img" aria-label="QR code that opens this page on your phone"></canvas>
+        <div>
+          <b>Scan with your phone camera</b>
+          <p>It opens this page on your phone, ready to install. Works on Android and iPhone.</p>
+        </div>
+      </div>
+
+      <p class="badges-title desktop-only">Or download it here</p>
+      <div class="badges desktop-only">
+        <a id="badgeAndroid" class="badge" href="#">
+          <svg viewBox="0 0 24 24" fill="#3DDC84" aria-hidden="true"><path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85a.637.637 0 0 0-.83.22l-1.88 3.24a11.43 11.43 0 0 0-8.94 0L5.65 5.67a.643.643 0 0 0-.87-.2c-.28.18-.37.54-.22.83L6.4 9.48A10.78 10.78 0 0 0 1 18h22a10.78 10.78 0 0 0-5.4-8.52zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></svg>
+          <span><small>Download for</small><strong>Android</strong></span>
+        </a>
+        <a class="badge" href="app.html">
+          <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M16.37 12.6c-.02-2.2 1.8-3.26 1.88-3.31a4.05 4.05 0 0 0-3.18-1.72c-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.87-.76a4.25 4.25 0 0 0-3.59 2.18c-1.54 2.66-.39 6.6 1.1 8.76.73 1.06 1.6 2.24 2.73 2.2 1.1-.05 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13a9.4 9.4 0 0 0 1.2-2.47 3.82 3.82 0 0 1-2.29-3.5zM14.2 6.12a3.8 3.8 0 0 0 .87-2.75 3.9 3.9 0 0 0-2.52 1.3 3.63 3.63 0 0 0-.9 2.65 3.23 3.23 0 0 0 2.55-1.2z"/></svg>
+          <span><small>Install on</small><strong>iPhone</strong></span>
+        </a>
+      </div>
     </section>
 
-    <!-- iPhone: the web app, installed from Safari. -->
-    <section id="iphone" class="option" aria-labelledby="iphoneTitle">
-      <div class="option-head">
-        <svg viewBox="0 0 24 24" fill="#101828" aria-hidden="true"><path d="M16.37 12.6c-.02-2.2 1.8-3.26 1.88-3.31a4.05 4.05 0 0 0-3.18-1.72c-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.87-.76a4.25 4.25 0 0 0-3.59 2.18c-1.54 2.66-.39 6.6 1.1 8.76.73 1.06 1.6 2.24 2.73 2.2 1.1-.05 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13a9.4 9.4 0 0 0 1.2-2.47 3.82 3.82 0 0 1-2.29-3.5zM14.2 6.12a3.8 3.8 0 0 0 .87-2.75 3.9 3.9 0 0 0-2.52 1.3 3.63 3.63 0 0 0-.9 2.65 3.23 3.23 0 0 0 2.55-1.2z"/></svg>
-        <h2 id="iphoneTitle">iPhone</h2>
-        <span class="tag" data-mine hidden>Your phone</span>
-      </div>
-      <p class="body">Free from this page, no App Store needed. Shares by QR code.</p>
-      <a class="button" href="app.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg>
-        Get it on iPhone
-      </a>
-      <ol>
-        <li>Open this page in <b>Safari</b>.</li>
-        <li>Tap <b>Get it on iPhone</b>.</li>
-        <li>Tap the Share button
-          <svg class="share-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Share"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg>,
-          then <b>Add to Home Screen</b>, then <b>Add</b>.</li>
-        <li>Open <b>Getmeds Card</b> from your home screen and sign in.</li>
-      </ol>
+    <!-- The real app: sign in, Online ID and Offline ID. -->
+    <section class="phones" aria-label="Getmeds Card screens">
+      <div class="phone left"><img src="img/screens/login.webp" alt="Sign-in screen" loading="lazy"></div>
+      <div class="phone right"><img src="img/screens/offline.webp" alt="Offline ID QR code" loading="lazy"></div>
+      <div class="phone middle"><img src="img/screens/online.webp" alt="Online ID QR code"></div>
     </section>
-  </div>
+  </main>
 
-  <p class="foot">Sign in with the email on your business card.<br>First time? Tap <b>First time / Forgot password?</b> on the sign-in screen.</p>
-</main>
+  <p class="foot">Sign in with the email on your business card.</p>
+</div>
 
 <script type="module">
   import { APK_URL } from "./js/config.js";
+  import { drawBranded } from "./js/qr.js";
 
-  document.getElementById("apkLink").href = APK_URL;
-
-  // Put the visitor's own phone first and mark it; both stay on the page.
+  const $ = (id) => document.getElementById(id);
   const ua = navigator.userAgent;
   const ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-  const mine = ios ? "iphone" : /Android/.test(ua) ? "android" : null;
-  if (mine) {
-    const card = document.getElementById(mine);
-    card.classList.add("mine");
-    card.querySelector("[data-mine]").hidden = false;
-    card.parentElement.prepend(card);
+  const android = /Android/.test(ua);
+
+  $("badgeAndroid").href = APK_URL;
+
+  if (android) {
+    // One tap: the APK starts downloading straight away.
+    $("ctaAndroid").href = APK_URL;
+    $("ctaAndroid").hidden = false;
+    $("ctaNote").textContent = "When it's downloaded, open it and tap Install.";
+    $("ctaOther").textContent = "On an iPhone? Install it here";
+    $("ctaOther").href = "app.html";
+  } else if (ios) {
+    // Opens the app, which shows the Add to Home Screen steps right there.
+    $("ctaIphone").hidden = false;
+    $("ctaNote").textContent = "Free, no App Store needed. Takes 3 taps.";
+    $("ctaOther").textContent = "On Android? Download the app";
+    $("ctaOther").href = APK_URL;
+  } else {
+    document.body.classList.add("desktop");
+    const logo = new Image();
+    logo.onload = () => {
+      const draw = () => (window.qrcode ? drawBranded($("pageQr"), location.href.split("#")[0], 132, logo, "H") : setTimeout(draw, 50));
+      draw();
+    };
+    logo.src = "img/getmeds_mark.png";
   }
 
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});

@@ -197,6 +197,49 @@ select.field { font-size: 16px; background: #fff url("data:image/svg+xml,%3Csvg 
 .install-hint svg { flex: none; width: 22px; height: 22px; color: var(--brand); margin-top: 1px; }
 .install-hint button { margin-left: auto; flex: none; width: 32px; height: 32px; }
 
+/* iPhone in the browser: Add to Home Screen steps */
+.install { padding-bottom: calc(110px + env(safe-area-inset-bottom)); }
+.install-icon { display: block; width: 88px; height: 88px; margin-top: 12px; border-radius: 20px; box-shadow: 0 10px 24px rgb(37 99 235 / 25%); }
+.install-steps { list-style: none; margin: 24px 0 8px; padding: 0; display: grid; gap: 12px; }
+.install-steps li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  font-size: 16px;
+  line-height: 1.45;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+.step-num {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--brand);
+  border-radius: 50%;
+}
+.inline-icon { display: inline-block; width: 20px; height: 20px; vertical-align: -4px; color: var(--brand); }
+.share-arrow {
+  position: fixed;
+  left: 50%;
+  bottom: calc(8px + env(safe-area-inset-bottom));
+  width: 44px;
+  height: 44px;
+  margin-left: -22px;
+  color: var(--brand);
+  animation: nudge 1.2s ease-in-out infinite;
+}
+.share-arrow.top { top: calc(4px + env(safe-area-inset-top)); bottom: auto; left: auto; right: 14px; transform: rotate(180deg); animation-name: nudge-up; }
+.share-arrow svg { width: 100%; height: 100%; }
+@keyframes nudge { 50% { transform: translateY(8px); } }
+@keyframes nudge-up { 0%, 100% { transform: rotate(180deg); } 50% { transform: rotate(180deg) translateY(8px); } }
+
 /* Pop-ups */
 dialog {
   width: min(92vw, 400px);

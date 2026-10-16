@@ -6,4 +6,4 @@ export const API_BASE = "https://getmeds-admin.vercel.app";
 export const APK_URL = "https://github.com/jeydweirdough/digital_business_id/releases/latest/download/GetmedsCard.apk";
 
 // Sent with support tickets, like versionName on Android. Bump with sw.js CACHE.
-export const WEB_VERSION = "web-1.0.0";
+export const WEB_VERSION = "web-1.1.0";

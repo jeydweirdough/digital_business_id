@@ -21,6 +21,38 @@
 <!-- Same screens as the Android app: sign in, the QR, and Contact us.
      Phone-tap (NFC) sharing is Android only; here it's the QR. -->
 
+<!-- ── iPhone, opened in the browser: how to add it to the home screen ─── -->
+<main id="install" class="screen install" hidden>
+  <img class="install-icon" src="img/apple-touch-icon.png" alt="" width="88" height="88">
+  <h1>Add Getmeds Card to your Home Screen</h1>
+  <p class="body">Then it opens like an app, with one tap, and works offline.</p>
+
+  <ol class="install-steps">
+    <li>
+      <span class="step-num">1</span>
+      <span>Tap <b>Share</b>
+        <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Share"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg>
+        <span id="shareWhere">at the bottom of the screen</span></span>
+    </li>
+    <li>
+      <span class="step-num">2</span>
+      <span>Scroll down and tap <b>Add to Home Screen</b>
+        <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M12 8v8M8 12h8"/></svg></span>
+    </li>
+    <li>
+      <span class="step-num">3</span>
+      <span>Tap <b>Add</b>, then open <b>Getmeds Card</b> from your Home Screen</span>
+    </li>
+  </ol>
+
+  <div class="center"><button id="useInBrowser" class="text-button" type="button">Use it in the browser instead</button></div>
+
+  <!-- Points at where the Share button is in this browser. -->
+  <div id="shareArrow" class="share-arrow" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M6 14l6 6 6-6"/></svg>
+  </div>
+</main>
+
 <!-- ── Sign in / set password (LoginActivity) ─────────────────────────── -->
 <main id="login" class="screen" hidden>
   <img class="logo" src="img/getmeds_logo.png" alt="Getmeds" width="200" height="109">

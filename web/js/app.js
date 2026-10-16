@@ -16,13 +16,14 @@ const QR_SIZE = 300;
 // ── Screens ────────────────────────────────────────────────────────────────
 
 function showScreen(id) {
-  for (const s of ["login", "share", "support"]) $(s).hidden = s !== id;
+  for (const s of ["install", "login", "share", "support"]) $(s).hidden = s !== id;
   window.scrollTo(0, 0);
   if (id === "share") keepAwake();
 }
 
 function start() {
-  if (Session.token() && Session.card()) openCard();
+  if (needsInstall()) openInstall();
+  else if (Session.token() && Session.card()) openCard();
   else openLogin();
 }
 
@@ -531,9 +532,10 @@ $("dialog").addEventListener("click", (event) => {
   if (event.target === $("dialog")) $("dialog").close();
 });
 
-// ── "Add to Home Screen" hint on iPhone ────────────────────────────────────
-// iPhones install a web app only from Safari's Share menu; there's no prompt
-// to show, so we say where to tap until it's installed or dismissed.
+// ── Add to Home Screen, on iPhone ──────────────────────────────────────────
+// iPhones install a web app only from the browser's Share menu, and the
+// browser can't tell whether it's already on the Home Screen. So in the
+// browser we show the steps first; opened from the Home Screen, it's the app.
 
 function isStandalone() {
   return navigator.standalone === true || matchMedia("(display-mode: standalone)").matches;
@@ -543,12 +545,35 @@ function isIos() {
   return /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 }
 
+const BROWSER_KEY = "getmedsCard.useInBrowser";
+
+function needsInstall() {
+  return isIos() && !isStandalone() && !localStorage.getItem(BROWSER_KEY);
+}
+
+function openInstall() {
+  showScreen("install");
+  // Safari's Share button is in the bottom bar; Chrome, Firefox and Edge on
+  // iPhone have it at the top right.
+  const top = /CriOS|FxiOS|EdgiOS/.test(navigator.userAgent);
+  $("shareArrow").classList.toggle("top", top);
+  $("shareWhere").textContent = top ? "at the top right of the screen" : "at the bottom of the screen";
+}
+
+$("useInBrowser").addEventListener("click", () => {
+  localStorage.setItem(BROWSER_KEY, "1");
+  showInstallHint();
+  start();
+});
+
+// Using it in the browser: a small reminder that it can still be installed.
 const HINT_KEY = "getmedsCard.installHintDismissed";
-if (isIos() && !isStandalone() && !localStorage.getItem(HINT_KEY)) {
+function showInstallHint() {
+  if (!isIos() || isStandalone() || localStorage.getItem(HINT_KEY)) return;
   for (const hint of document.querySelectorAll("[data-install-hint]")) {
     hint.innerHTML =
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg>' +
-      "<span><b>Install this app:</b> tap the Share button in Safari, then <b>Add to Home Screen</b>.</span>" +
+      "<span><b>Install this app:</b> tap Share, then <b>Add to Home Screen</b>.</span>" +
       '<button type="button" class="icon-button" aria-label="Dismiss"><svg viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" style="width:18px;height:18px"><path d="M6 6l12 12M18 6L6 18"/></svg></button>';
     hint.querySelector("button").addEventListener("click", () => {
       localStorage.setItem(HINT_KEY, "1");
@@ -557,6 +582,7 @@ if (isIos() && !isStandalone() && !localStorage.getItem(HINT_KEY)) {
     hint.hidden = false;
   }
 }
+showInstallHint();
 
 // ── Offline support ────────────────────────────────────────────────────────
 

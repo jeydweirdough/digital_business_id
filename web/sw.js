@@ -4,7 +4,7 @@
 //
 // Bump CACHE (and WEB_VERSION in js/config.js) on every change, so phones
 // drop the old files.
-const CACHE = "getmeds-card-web-1.0.0";
+const CACHE = "getmeds-card-web-1.1.0";
 
 const FILES = [
   "./",
@@ -24,6 +24,9 @@ const FILES = [
   "img/icon-192.png",
   "img/icon-512.png",
   "img/apple-touch-icon.png",
+  "img/screens/login.webp",
+  "img/screens/online.webp",
+  "img/screens/offline.webp",
   "fonts/poppins_regular.ttf",
   "fonts/poppins_medium.ttf",
   "fonts/poppins_semibold.ttf",
