@@ -12,6 +12,11 @@ name: Deploy APK
 
 on:
   workflow_dispatch:
+    inputs:
+      required:
+        description: "Required update: installed apps must update before they can be used again"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -61,10 +66,16 @@ jobs:
           path: GetmedsCard-*.apk
 
       - name: Publish GitHub Release
+        # The app checks this release for updates (Updates.kt). "[required]" in
+        # the notes makes its update prompt one that can't be put off.
         env:
           GH_TOKEN: ${{ github.token }}
+          REQUIRED: ${{ inputs.required }}
         run: |
+          notes=""
+          if [ "$REQUIRED" = "true" ]; then notes="[required] Installed apps must update to this version."; fi
           gh release create "${{ steps.version.outputs.tag }}" GetmedsCard-*.apk GetmedsCard.apk \
             --target "${{ github.sha }}" \
             --title "GetmedsCard ${{ steps.version.outputs.tag }}" \
+            --notes "$notes" \
             --generate-notes

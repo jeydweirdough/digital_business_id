@@ -61,6 +61,25 @@
     <string name="tap_ready_detail_direct">Hold the back of their unlocked Android phone against yours to send your contact. iPhones can\'t receive a contact by tap; let them scan the QR.</string>
     <string name="sent">Sent! Check their phone.</string>
 
+    <!-- Save QR as image -->
+    <string name="save_qr">Save QR as image</string>
+    <string name="qr_saved_title">QR saved</string>
+    <string name="qr_saved_message">Your %1$s QR is in your photos, in the \"%2$s\" album.</string>
+    <string name="qr_share">Share</string>
+    <string name="done">Done</string>
+    <string name="qr_save_failed">Couldn\'t save the QR. Please try again.</string>
+    <string name="qr_save_needs_permission">Allow access to photos to save the QR.</string>
+
+    <!-- In-app updates -->
+    <string name="update_title">Update available: v%1$s</string>
+    <string name="update_message">A new version of Getmeds Card is ready. It takes a few seconds and keeps you signed in.</string>
+    <string name="update_required_message">This version of Getmeds Card is no longer supported. Update to keep using the app. It takes a few seconds and keeps you signed in.</string>
+    <string name="update_now">Update</string>
+    <string name="update_later">Later</string>
+    <string name="update_downloading">Downloading…</string>
+    <string name="update_progress">Downloading… %1$d%%</string>
+    <string name="update_failed">The update didn\'t finish. Check your internet and try again.</string>
+
     <!-- Contact us -->
     <string name="contact_us">Contact us</string>
     <string name="back">Back</string>

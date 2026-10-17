@@ -7,6 +7,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
@@ -28,6 +29,7 @@ import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 
 /**
@@ -53,6 +55,8 @@ class ShareActivity : Activity() {
 
     private var nfc: NfcAdapter? = null
     private var shownPayload = ""
+    /** What the QR on screen holds; "" when there's no QR. For "Save QR as image". */
+    private var qrPayload = ""
     private val main = Handler(Looper.getMainLooper())
     private val hideSent = Runnable { sent.visibility = View.GONE }
 
@@ -101,6 +105,7 @@ class ShareActivity : Activity() {
         if (Session.token(this) == null) return signedOut(getString(R.string.session_expired))
         refresh()
         watchInternet()
+        Updates.check(this)
 
         ShareState.active = true
         ShareState.onSent = ::showSent
@@ -171,6 +176,7 @@ class ShareActivity : Activity() {
             // Android phones open their save-contact screen for a text/vcard tag.
             else -> NdefMessage(NdefRecord.createMime("text/vcard", payload.toByteArray(Charsets.UTF_8))).toByteArray()
         }
+        qrPayload = if (canShare) payload else ""
         if (canShare && payload != shownPayload) {
             val size = (300 * resources.displayMetrics.density).toInt()
             val logo = BitmapFactory.decodeResource(resources, R.drawable.getmeds_mark)
@@ -233,11 +239,13 @@ class ShareActivity : Activity() {
         val multiple = Session.cards(this).size > 1
         PopupMenu(this, anchor).apply {
             if (multiple) menu.add(0, MENU_SWITCH, 0, getString(R.string.switch_card, Session.cards(this@ShareActivity).size))
-            menu.add(0, MENU_HOW, 1, R.string.how_it_works)
-            menu.add(0, MENU_SIGN_OUT, 2, R.string.sign_out)
+            if (qrPayload.isNotEmpty()) menu.add(0, MENU_SAVE_QR, 1, R.string.save_qr)
+            menu.add(0, MENU_HOW, 2, R.string.how_it_works)
+            menu.add(0, MENU_SIGN_OUT, 3, R.string.sign_out)
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     MENU_SWITCH -> pickCard()
+                    MENU_SAVE_QR -> saveQr()
                     MENU_HOW -> showHowItWorks()
                     MENU_SIGN_OUT -> confirmSignOut()
                 }
@@ -245,6 +253,39 @@ class ShareActivity : Activity() {
             }
             show()
         }
+    }
+
+    // ── Save QR as image ─────────────────────────────────────────────────────
+
+    private fun saveQr() {
+        if (QrExport.needsPermission &&
+            checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_STORAGE)
+            return
+        }
+        val payload = qrPayload.ifEmpty { return }
+        val website = Session.shareMode(this) == ShareMode.WEBSITE
+        val name = Session.card(this)?.fullName.orEmpty()
+        Bg.run(this, { QrExport.save(this, payload, website, name) }) { result ->
+            result.onSuccess { uri ->
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.qr_saved_title)
+                    .setMessage(getString(R.string.qr_saved_message, getString(if (website) R.string.mode_website else R.string.mode_direct), QrExport.ALBUM))
+                    .setPositiveButton(R.string.qr_share) { _, _ -> QrExport.share(this, uri) }
+                    .setNegativeButton(R.string.done, null)
+                    .show()
+            }.onFailure {
+                Toast.makeText(this, R.string.qr_save_failed, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode != REQUEST_STORAGE) return
+        if (grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) saveQr()
+        else Toast.makeText(this, R.string.qr_save_needs_permission, Toast.LENGTH_LONG).show()
     }
 
     // ── Picking the mode from this phone's internet ──────────────────────────
@@ -393,5 +434,7 @@ class ShareActivity : Activity() {
         const val MENU_SWITCH = 1
         const val MENU_HOW = 2
         const val MENU_SIGN_OUT = 3
+        const val MENU_SAVE_QR = 4
+        const val REQUEST_STORAGE = 11
     }
 }

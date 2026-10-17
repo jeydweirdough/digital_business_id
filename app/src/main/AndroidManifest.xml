@@ -6,6 +6,12 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- In-app updates: hands the downloaded APK to Android's installer. -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <!-- "Save QR as image" on Android 9 and older; newer versions need no permission. -->
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
 
     <!-- Not required: phones without NFC can still share by QR and link. -->
     <uses-feature android:name="android.hardware.nfc" android:required="false" />
@@ -39,6 +45,15 @@
             android:name=".SupportActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
+        <!-- Android's installer reports back here during an in-app update. -->
+        <receiver
+            android:name=".InstallStatusReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="ph.getmeds.card.UPDATE_INSTALL_STATUS" />
+            </intent-filter>
+        </receiver>
 
         <!-- Makes this phone look like an NFC tag holding the card link
              while the Share screen is open. -->

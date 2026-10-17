@@ -28,6 +28,10 @@ Needs JDK 17 and the Android SDK (easiest: install Android Studio, then *Open* t
 
 The backend URL is `API_BASE` in `app/build.gradle.kts`.
 
+**In-app updates** (`Updates.kt`): the app checks the latest GitHub Release every few hours. If it's newer than the installed version, it offers **Update**, downloads the APK inside the app and hands it to Android's installer, keeping the sign-in. Tick **Required update** when running Deploy APK to make the prompt impossible to put off (it adds `[required]` to the release notes). Offline, the check is skipped.
+
+**Save QR as image**: ⋮ → *Save QR as image* saves the QR on screen (Online ID or Offline ID) as a PNG in the phone's photos, in a "Getmeds Card" album, and offers to share it.
+
 ## Web app and download page (`web/`)
 
 `web/index.html` is the page to send people to: **Download for Android** (the APK from the latest GitHub Release) and **Get it on iPhone**, which opens the web app `web/app.html`. iPhone users add it to their home screen from Safari's Share menu. It has the same sign-in, Online ID / Offline ID QR and Contact us as the Android app, and works offline after the first visit. Phone tap is Android only, because browsers can't act as an NFC tag.

@@ -87,6 +87,12 @@ class LoginActivity : Activity() {
         intent.getStringExtra(EXTRA_MESSAGE)?.let(::showError)
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Signed out too: an old version may be why they can't sign in.
+        if (!isFinishing) Updates.check(this)
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString("mode", mode.name)
