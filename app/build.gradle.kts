@@ -13,10 +13,10 @@ android {
         // phones without NFC still get the QR and link.
         minSdk = 24
         targetSdk = 35
-        versionCode = 20
-        versionName = "1.15.0"
+        versionCode = 21
+        versionName = "1.15.1"
 
-        buildConfigField("String", "API_BASE", "\"https://getmeds-admin.vercel.app\"")
+        buildConfigField("String", "API_BASE", "\"https://getmeds-api.bishnoi.ai\"")
     }
 
     buildFeatures {

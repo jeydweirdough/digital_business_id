@@ -4,7 +4,7 @@
 //
 // Bump CACHE (and WEB_VERSION in js/config.js) on every change, so phones
 // drop the old files.
-const CACHE = "getmeds-card-web-1.1.0";
+const CACHE = "getmeds-card-web-1.1.1";
 
 const FILES = [
   "./",
