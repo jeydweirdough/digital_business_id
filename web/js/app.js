@@ -16,7 +16,7 @@ const QR_SIZE = 300;
 // ── Screens ────────────────────────────────────────────────────────────────
 
 function showScreen(id) {
-  for (const s of ["install", "login", "share", "support"]) $(s).hidden = s !== id;
+  for (const s of ["install", "login", "share", "support", "profile"]) $(s).hidden = s !== id;
   window.scrollTo(0, 0);
   if (id === "share") keepAwake();
 }
@@ -294,6 +294,7 @@ $("menu").addEventListener("click", () => {
   const count = Session.cards().length;
   const list = [];
   if (count > 1) list.push({ label: `Switch card (${count} cards)`, onClick: pickCard });
+  if (Session.profileFields().length) list.push({ label: "Edit my details", onClick: openProfile });
   list.push({ label: "How it works", onClick: howItWorks });
   list.push({ label: "Sign out", onClick: confirmSignOut });
   dialog({ list, actions: [{ label: "Cancel" }] });
@@ -340,6 +341,89 @@ function signedOut(message) {
   shownPayload = "";
   wakeLock?.release().catch(() => {});
   openLogin(message);
+}
+
+// ── Edit my details (ProfileActivity) ─────────────────────────────────────
+
+const PROFILE_FIELDS = ["fullName", "jobTitle", "mobile", "otherMobiles", "officePhone", "whatsapp", "viber", "wechatId"];
+let profileCardId = "";
+let profileOriginal = {};
+
+function profileValue(key) {
+  const raw = $(`pf-${key}`).value;
+  if (key === "otherMobiles") return raw.split("\n").map((s) => s.trim()).filter(Boolean).join("\n");
+  return raw.trim().replace(/\s+/g, " ");
+}
+
+function openProfile() {
+  const card = Session.card();
+  if (!card) return;
+  const allowed = Session.profileFields();
+  profileCardId = card.id;
+  profileOriginal = {};
+  for (const key of PROFILE_FIELDS) {
+    const row = document.querySelector(`[data-field="${key}"]`);
+    row.hidden = !allowed.includes(key);
+    const value = key === "otherMobiles" ? (card.otherMobiles || []).join("\n") : card[key] || "";
+    $(`pf-${key}`).value = value;
+    profileOriginal[key] = value;
+  }
+  $("profileIntro").textContent =
+    `Changes show on your card page straight away. Your sign-in email (${card.email || "-"}), company and card link stay as they are; ask the admin to change those.`;
+  $("profileError").hidden = true;
+  showScreen("profile");
+}
+
+/** Only the fields that changed, so an edit made in the Studio meanwhile isn't overwritten. */
+function profileChanges() {
+  const changes = {};
+  for (const key of PROFILE_FIELDS) {
+    if (document.querySelector(`[data-field="${key}"]`).hidden) continue;
+    const now = profileValue(key);
+    if (now === profileOriginal[key]) continue;
+    changes[key] = key === "otherMobiles" ? now.split("\n").filter(Boolean) : now;
+  }
+  return changes;
+}
+
+$("profileBack").addEventListener("click", () => {
+  if (!Object.keys(profileChanges()).length) return showScreen("share");
+  dialog({
+    body: "Discard your changes?",
+    actions: [{ label: "Keep editing" }, { label: "Discard", onClick: () => showScreen("share") }],
+  });
+});
+
+$("profileForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const changes = profileChanges();
+  if (!Object.keys(changes).length) return showScreen("share");
+  if ("fullName" in changes && !changes.fullName) return profileError("Your name can't be empty.");
+  const token = Session.token();
+  if (!token) return signedOut("You've been signed out. Please sign in again.");
+
+  $("profileError").hidden = true;
+  $("profileProgress").hidden = false;
+  $("saveProfile").disabled = true;
+  try {
+    Session.saveCards(await Api.updateProfile(token, profileCardId, changes));
+    showScreen("share");
+    const card = Session.card();
+    if (card) render(card);
+    dialog({ body: "Your details are saved.", actions: [{ label: "Got it" }] });
+  } catch (e) {
+    if (e instanceof Api.ApiError && (e.status === 401 || e.status === 403)) return signedOut(e.message);
+    if (e instanceof Api.ApiError && e.status === 404) return profileError("Editing isn't available yet. Please try again later.");
+    profileError(failureText(e));
+  } finally {
+    $("profileProgress").hidden = true;
+    $("saveProfile").disabled = false;
+  }
+});
+
+function profileError(message) {
+  $("profileError").textContent = message;
+  $("profileError").hidden = false;
 }
 
 // ── Contact us (SupportActivity) ───────────────────────────────────────────

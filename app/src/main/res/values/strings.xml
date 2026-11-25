@@ -72,13 +72,35 @@
 
     <!-- In-app updates -->
     <string name="update_title">Update available: v%1$s</string>
-    <string name="update_message">A new version of Getmeds Card is ready. It takes a few seconds and keeps you signed in.</string>
-    <string name="update_required_message">This version of Getmeds Card is no longer supported. Update to keep using the app. It takes a few seconds and keeps you signed in.</string>
+    <string name="update_title_plain">Update available</string>
+    <string name="update_message">A new version of Getmeds Card is ready. Tap Update to open the download page, then tap Download for Android and install it. You stay signed in.</string>
+    <string name="update_required_message">This version of Getmeds Card is no longer supported. Tap Update to open the download page, then tap Download for Android and install it. You stay signed in.</string>
+    <string name="update_whats_new">What\'s new:</string>
     <string name="update_now">Update</string>
     <string name="update_later">Later</string>
-    <string name="update_downloading">Downloading…</string>
-    <string name="update_progress">Downloading… %1$d%%</string>
-    <string name="update_failed">The update didn\'t finish. Check your internet and try again.</string>
+    <string name="update_no_browser">Open %1$s in your browser to update.</string>
+
+    <!-- Edit my details -->
+    <string name="edit_details">Edit my details</string>
+    <string name="edit_details_intro">Changes show on your card page straight away. Your sign-in email (%1$s), company and card link stay as they are; ask the admin to change those.</string>
+    <string name="edit_full_name">Full name</string>
+    <string name="edit_job_title">Job title</string>
+    <string name="edit_mobile">Mobile</string>
+    <string name="edit_other_mobiles">Other mobile numbers</string>
+    <string name="edit_other_mobiles_hint">One number per line</string>
+    <string name="edit_office_phone">Office phone</string>
+    <string name="edit_whatsapp">WhatsApp number</string>
+    <string name="edit_viber">Viber number</string>
+    <string name="edit_same_as_mobile">Leave empty to use your mobile</string>
+    <string name="edit_wechat">WeChat ID</string>
+    <string name="edit_details_save">Save</string>
+    <string name="edit_details_saved">Your details are saved.</string>
+    <string name="edit_details_name_required">Your name can\'t be empty.</string>
+    <string name="edit_details_offline">Couldn\'t save. Check your internet and try again.</string>
+    <string name="edit_details_unavailable">Editing isn\'t available yet. Please try again later.</string>
+    <string name="edit_details_discard">Discard your changes?</string>
+    <string name="edit_details_discard_yes">Discard</string>
+    <string name="edit_details_keep">Keep editing</string>
 
     <!-- Contact us -->
     <string name="contact_us">Contact us</string>

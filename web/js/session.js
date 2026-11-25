@@ -51,14 +51,24 @@ export function save(signIn) {
   write({
     token: signIn.token,
     cards: signIn.cards,
+    profileFields: signIn.profileFields,
     selected: signIn.card?.id,
     expiresAt: Date.now() + signIn.expiresIn * 1000,
   });
 }
 
 /** From /api/card/me: picks up added, changed and removed cards. */
-export function saveCards(all) {
-  write({ cards: all });
+export function saveCards({ cards: all, profileFields }) {
+  write({ cards: all, profileFields });
+}
+
+/**
+ * The details "Edit my details" may change, as the backend last said. Empty
+ * when the backend doesn't support editing, which hides the option.
+ */
+export function profileFields() {
+  const fields = read().profileFields;
+  return Array.isArray(fields) ? fields : [];
 }
 
 /** "website" (Online ID) unless the holder picked "direct" (Offline ID). */

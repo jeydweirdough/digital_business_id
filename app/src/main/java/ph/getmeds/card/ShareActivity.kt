@@ -240,12 +240,14 @@ class ShareActivity : Activity() {
         PopupMenu(this, anchor).apply {
             if (multiple) menu.add(0, MENU_SWITCH, 0, getString(R.string.switch_card, Session.cards(this@ShareActivity).size))
             if (qrPayload.isNotEmpty()) menu.add(0, MENU_SAVE_QR, 1, R.string.save_qr)
+            if (Session.profileFields(this@ShareActivity).isNotEmpty()) menu.add(0, MENU_EDIT, 1, R.string.edit_details)
             menu.add(0, MENU_HOW, 2, R.string.how_it_works)
             menu.add(0, MENU_SIGN_OUT, 3, R.string.sign_out)
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     MENU_SWITCH -> pickCard()
                     MENU_SAVE_QR -> saveQr()
+                    MENU_EDIT -> startActivity(Intent(this@ShareActivity, ProfileActivity::class.java))
                     MENU_HOW -> showHowItWorks()
                     MENU_SIGN_OUT -> confirmSignOut()
                 }
@@ -435,6 +437,7 @@ class ShareActivity : Activity() {
         const val MENU_HOW = 2
         const val MENU_SIGN_OUT = 3
         const val MENU_SAVE_QR = 4
+        const val MENU_EDIT = 5
         const val REQUEST_STORAGE = 11
     }
 }

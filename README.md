@@ -28,7 +28,9 @@ Needs JDK 17 and the Android SDK (easiest: install Android Studio, then *Open* t
 
 The backend URL is `API_BASE` in `app/build.gradle.kts`.
 
-**In-app updates** (`Updates.kt`): the app checks the latest GitHub Release every few hours. If it's newer than the installed version, it offers **Update**, downloads the APK inside the app and hands it to Android's installer, keeping the sign-in. Tick **Required update** when running Deploy APK to make the prompt impossible to put off (it adds `[required]` to the release notes). Offline, the check is skipped.
+**Update notices** (`Updates.kt`, from 1.16.0): every few hours the app asks the backend (`GET /api/card/app?version=…`) whether it's behind. The backend reads the latest GitHub Release, so running **Deploy APK** is all it takes for every phone to hear about a new version. The notice shows the release notes and **Update** opens the download page (https://jeydweirdough.github.io/digital_business_id/), where the holder installs the new APK over the old one and stays signed in. Tick **Required update** when running Deploy APK (adds `[required]` to the notes), or set `CARD_APP_MIN_VERSION` on the backend, to make the notice impossible to put off. The download link (`CARD_APP_DOWNLOAD_URL`) and the rules live in the backend, so they change without an app update. Versions 1.15.x still use their own GitHub check and in-app install; older ones have no update check, so send those holders the download page link.
+
+**Edit my details** (⋮ menu, from 1.16.0; also in the web app): the holder changes the name, job title and numbers on the card on screen through `POST /api/card/profile`. The email (sign-in), company and card link stay with the admin. The option only shows when the backend lists `profileFields`, so a new app on an old backend simply doesn't offer it.
 
 **Save QR as image**: ⋮ → *Save QR as image* saves the QR on screen (Online ID or Offline ID) as a PNG in the phone's photos, in a "Getmeds Card" album, and offers to share it.
 

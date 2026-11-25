@@ -14,6 +14,7 @@ class Card(val json: JSONObject) {
     val officePhone: String get() = json.optString("officePhone")
     val whatsapp: String get() = json.optString("whatsapp")
     val viber: String get() = json.optString("viber")
+    val wechatId: String get() = json.optString("wechatId")
     val otherMobiles: List<String> get() = strings("otherMobiles")
     val email: String get() = json.optString("email")
     val otherEmails: List<String> get() = strings("otherEmails")
@@ -81,15 +82,26 @@ object Session {
         prefs(context).edit()
             .putString("token", signIn.token)
             .putString("cards", signIn.cards.toString())
+            .putStringSet("profileFields", signIn.profileFields)
             .putString("selected", signIn.card.optString("id"))
             .putLong("expiresAt", System.currentTimeMillis() + signIn.expiresInSeconds * 1000)
             .apply()
     }
 
     /** From /api/card/me: picks up added, changed and removed cards. */
-    fun saveCards(context: Context, cards: JSONArray) {
-        prefs(context).edit().putString("cards", cards.toString()).apply()
+    fun saveCards(context: Context, me: Api.Me) {
+        prefs(context).edit()
+            .putString("cards", me.cards.toString())
+            .putStringSet("profileFields", me.profileFields)
+            .apply()
     }
+
+    /**
+     * The details "Edit my details" may change, as the backend last said.
+     * Empty when the backend doesn't support editing, which hides the option.
+     */
+    fun profileFields(context: Context): Set<String> =
+        prefs(context).getStringSet("profileFields", null).orEmpty()
 
     /** Website card unless the holder picked Direct contact (reset on sign-out). */
     fun shareMode(context: Context): ShareMode =

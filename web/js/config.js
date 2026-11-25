@@ -6,4 +6,4 @@ export const API_BASE = "https://getmeds-api.bishnoi.ai";
 export const APK_URL = "https://github.com/jeydweirdough/digital_business_id/releases/latest/download/GetmedsCard.apk";
 
 // Sent with support tickets, like versionName on Android. Bump with sw.js CACHE.
-export const WEB_VERSION = "web-1.1.1";
+export const WEB_VERSION = "web-1.2.0";

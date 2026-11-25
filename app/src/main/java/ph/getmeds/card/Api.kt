@@ -16,8 +16,17 @@ object Api {
 
     class CodeTicket(val ticket: String, val sentTo: String)
 
-    /** [card]: the one signed in with; [cards]: every card under the email. */
-    class SignIn(val token: String, val card: JSONObject, val cards: JSONArray, val expiresInSeconds: Long)
+    /**
+     * [card]: the one signed in with; [cards]: every card under the email;
+     * [profileFields]: what "Edit my details" may change (empty on backends without it).
+     */
+    class SignIn(
+        val token: String, val card: JSONObject, val cards: JSONArray, val expiresInSeconds: Long,
+        val profileFields: Set<String>,
+    )
+
+    /** /api/card/me and /api/card/profile. */
+    class Me(val cards: JSONArray, val profileFields: Set<String>)
 
     /** [remember]: stay signed in 30 days instead of 1. */
     fun login(email: String, password: String, remember: Boolean): SignIn =
@@ -40,7 +49,34 @@ object Api {
         ))
 
     /** Every card the holder can show (just one on older backends). */
-    fun me(token: String): JSONArray = cardsOf(call("GET", "/api/card/me", null, token))
+    fun me(token: String): Me = meOf(call("GET", "/api/card/me", null, token))
+
+    /**
+     * "Edit my details": [changes] holds only the fields that changed ("" clears
+     * one). Returns the holder's cards with the change applied.
+     */
+    fun updateProfile(token: String, cardId: String, changes: JSONObject): Me {
+        val body = JSONObject(changes.toString()).put("cardId", cardId)
+        return meOf(call("POST", "/api/card/profile", body, token))
+    }
+
+    class AppUpdate(
+        val latestVersion: String, val available: Boolean, val required: Boolean,
+        val notes: String, val downloadUrl: String,
+    )
+
+    /** Whether this build should update, and where to get the new one. Null if the backend can't say. */
+    fun appUpdate(): AppUpdate? {
+        val version = java.net.URLEncoder.encode(BuildConfig.VERSION_NAME, "UTF-8")
+        val android = call("GET", "/api/card/app?platform=android&version=$version", null, null, readTimeoutMs = 15_000)
+            .optJSONObject("android") ?: return null
+        val url = android.optString("downloadUrl")
+        if (url.isBlank()) return null
+        return AppUpdate(
+            android.optString("latestVersion"), android.optBoolean("updateAvailable"), android.optBoolean("required"),
+            android.optString("notes"), url,
+        )
+    }
 
     class TicketFile(val name: String, val type: String, val bytes: ByteArray)
 
@@ -64,7 +100,17 @@ object Api {
     }
 
     private fun signIn(res: JSONObject) =
-        SignIn(res.getString("token"), res.getJSONObject("card"), cardsOf(res), res.optLong("expiresIn", 86_400))
+        SignIn(
+            res.getString("token"), res.getJSONObject("card"), cardsOf(res), res.optLong("expiresIn", 86_400),
+            fieldsOf(res),
+        )
+
+    private fun meOf(res: JSONObject) = Me(cardsOf(res), fieldsOf(res))
+
+    private fun fieldsOf(res: JSONObject): Set<String> {
+        val array = res.optJSONArray("profileFields") ?: return emptySet()
+        return (0 until array.length()).map { array.optString(it) }.filter { it.isNotBlank() }.toSet()
+    }
 
     private fun cardsOf(res: JSONObject): JSONArray =
         res.optJSONArray("cards")?.takeIf { it.length() > 0 } ?: JSONArray().put(res.getJSONObject("card"))

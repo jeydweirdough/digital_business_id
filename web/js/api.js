@@ -31,9 +31,14 @@ export async function resetPassword(ticket, code, password, remember) {
   return signIn(await call("POST", "/api/card/password/reset", { ticket, code, password, remember }));
 }
 
-/** Every card the holder can show (just one on older backends). */
+/** Every card the holder can show (just one on older backends), and what the holder may edit. */
 export async function me(token) {
-  return cardsOf(await call("GET", "/api/card/me", null, token));
+  return meOf(await call("GET", "/api/card/me", null, token));
+}
+
+/** "Edit my details": changes holds only the fields that changed ("" clears one). */
+export async function updateProfile(token, cardId, changes) {
+  return meOf(await call("POST", "/api/card/profile", { ...changes, cardId }, token));
 }
 
 /** "Contact us": emails a ticket to the developer. files: [{name, type, base64}]. Returns the ticket number. */
@@ -45,7 +50,21 @@ export async function sendTicket(token, cardId, topic, message, device, files) {
 }
 
 function signIn(res) {
-  return { token: res.token, card: res.card, cards: cardsOf(res), expiresIn: res.expiresIn || 86_400 };
+  return {
+    token: res.token,
+    card: res.card,
+    cards: cardsOf(res),
+    expiresIn: res.expiresIn || 86_400,
+    profileFields: fieldsOf(res),
+  };
+}
+
+function meOf(res) {
+  return { cards: cardsOf(res), profileFields: fieldsOf(res) };
+}
+
+function fieldsOf(res) {
+  return Array.isArray(res.profileFields) ? res.profileFields : [];
 }
 
 function cardsOf(res) {

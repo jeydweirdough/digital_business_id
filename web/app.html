@@ -170,6 +170,41 @@
   <p id="ticketError" class="error" role="alert" hidden></p>
 </main>
 
+<!-- ── Edit my details (ProfileActivity) ────────────────────────────── -->
+<main id="profile" class="screen" hidden>
+  <div class="back-row">
+    <button id="profileBack" class="icon-button" type="button" aria-label="Back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+    </button>
+    <h1>Edit my details</h1>
+  </div>
+  <p id="profileIntro" class="body" style="margin-top:12px"></p>
+
+  <!-- Fields the backend doesn't list in profileFields are hidden in app.js. -->
+  <form id="profileForm" novalidate>
+    <div data-field="fullName"><label for="pf-fullName">Full name</label>
+      <input id="pf-fullName" class="field" maxlength="100" autocomplete="name" autocapitalize="words"></div>
+    <div data-field="jobTitle"><label for="pf-jobTitle">Job title</label>
+      <input id="pf-jobTitle" class="field" maxlength="120" autocapitalize="words"></div>
+    <div data-field="mobile"><label for="pf-mobile">Mobile</label>
+      <input id="pf-mobile" class="field" type="tel" maxlength="40" autocomplete="tel"></div>
+    <div data-field="otherMobiles"><label for="pf-otherMobiles">Other mobile numbers</label>
+      <textarea id="pf-otherMobiles" class="field short" maxlength="200" inputmode="tel" placeholder="One number per line"></textarea></div>
+    <div data-field="officePhone"><label for="pf-officePhone">Office phone</label>
+      <input id="pf-officePhone" class="field" type="tel" maxlength="40"></div>
+    <div data-field="whatsapp"><label for="pf-whatsapp">WhatsApp number</label>
+      <input id="pf-whatsapp" class="field" type="tel" maxlength="40" placeholder="Leave empty to use your mobile"></div>
+    <div data-field="viber"><label for="pf-viber">Viber number</label>
+      <input id="pf-viber" class="field" type="tel" maxlength="40" placeholder="Leave empty to use your mobile"></div>
+    <div data-field="wechatId"><label for="pf-wechatId">WeChat ID</label>
+      <input id="pf-wechatId" class="field" maxlength="40" autocapitalize="off" spellcheck="false"></div>
+
+    <button id="saveProfile" class="button" type="submit">Save</button>
+  </form>
+  <div id="profileProgress" class="spinner" hidden></div>
+  <p id="profileError" class="error" role="alert" hidden></p>
+</main>
+
 <!-- One pop-up for every message, like AlertDialog. -->
 <dialog id="dialog">
   <h2 id="dialogTitle"></h2>
